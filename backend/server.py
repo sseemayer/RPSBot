@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 import numpy as np
 
-from flask import Flask, session, request, jsonify
+from flask import Flask, session, request, jsonify, send_from_directory
 from flask_cors import CORS
 
 import rps
 import pickle
 import random
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='')
 CORS(app, supports_credentials=True)
 app.secret_key = 'opwjdpwqhjfipqgf0q3gh9076'
 
@@ -29,6 +29,11 @@ def get_counts():
 
 def set_counts(counts):
     session['counts'] = pickle.dumps(counts, protocol=pickle.HIGHEST_PROTOCOL)
+
+
+@app.route('/')
+def index():
+    return send_from_directory('static', 'index.html')
 
 
 @app.route('/api/reset', methods=['POST'])

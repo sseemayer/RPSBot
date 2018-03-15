@@ -62,7 +62,7 @@ import RPSInput from './components/RPSInput.vue'
 import axios from 'axios'
 import * as d3 from 'd3'
 
-const apiURL = 'http://localhost:5000/api'
+const apiURL = '/api'
 
 function score (p, b) {
   if (p === b) {
