@@ -58,8 +58,6 @@ def log_event():
         counts += rps.count([last_event, current_event], degree=1)
         set_counts(counts)
 
-        print(counts)
-
     session['last_event'] = current_event
 
     return "200 OK"
