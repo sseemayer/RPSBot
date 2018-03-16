@@ -126,7 +126,9 @@ export default {
       dimensions: dimensions,
       margin: margin,
 
+      plotContainer: null,
       svg: null,
+      main: null,
       line: d3.line()
         .x((d, i) => this.x(i))
         .y((d) => this.y(d.playerWins - d.botWins)),
@@ -143,34 +145,41 @@ export default {
   },
 
   mounted () {
-    this.svg = d3.select(this.$refs.plot).append('svg')
-      .attr('width', 800)
-      .attr('height', 300)
-      .append('g')
+    window.addEventListener('resize', this.redraw.bind(this))
+
+    this.plotContainer = this.$refs.plot
+
+    this.dimensions.width = this.plotContainer.clientWidth
+
+    this.svg = d3.select(this.plotContainer).append('svg')
+      .attr('width', this.dimensions.width)
+      .attr('height', this.dimensions.height)
+
+    this.main = this.svg.append('g')
       .attr('transform', `translate(${this.margin.left}, ${this.margin.top})`)
 
-    this.baseLine = this.svg.append('path')
+    this.baseLine = this.main.append('path')
       .attr('class', 'base-line')
       .attr('d', `M ${this.x(0)} ${this.y(0)} L ${this.dimensions.width - this.margin.left - this.margin.right} ${this.y(0)}`)
 
-    this.path = this.svg.append('path')
+    this.path = this.main.append('path')
       .attr('class', 'data')
 
-    this.svg.append('text')
+    this.main.append('text')
       .attr('class', 'legend')
       .attr('x', -75)
       .attr('y', -40)
       .attr('transform', 'rotate(-90)')
       .text('Bot better')
 
-    this.svg.append('text')
+    this.main.append('text')
       .attr('class', 'legend')
       .attr('x', -225)
       .attr('y', -40)
       .attr('transform', 'rotate(-90)')
       .text('Player better')
 
-    this.gYAxis = this.svg.append('g')
+    this.gYAxis = this.main.append('g')
       .attr('class', 'y axis')
 
     this.redraw()
@@ -182,6 +191,10 @@ export default {
 
   methods: {
     redraw () {
+      this.dimensions.width = this.plotContainer.clientWidth
+      this.svg.attr('width', this.dimensions.width)
+      this.x.range([0, this.dimensions.width - this.margin.left - this.margin.right])
+
       let extent = d3.max(this.history, (d) => Math.abs(d.playerWins - d.botWins)) + 0.1
 
       this.x.domain([0, this.history.length - 1])
