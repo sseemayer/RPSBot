@@ -24,33 +24,41 @@
 
         .box
           h4.is-size-4 Predictions
-          dl
-            dt(:class='{"has-text-primary": playerChoice === "r"}'): font-awesome-icon(icon='hand-rock')
-            dd(:class='{"has-text-primary": playerChoice === "r"}') {{(botProbs.r * 100).toFixed(0)}}%
+          .columns.has-text-centered
+            .column(:class='{"has-text-primary": playerChoice === "r"}')
+              font-awesome-icon(icon='hand-rock')
+              div {{(botProbs.r * 100).toFixed(0)}}%
 
-            dt(:class='{"has-text-primary": playerChoice === "p"}'): font-awesome-icon(icon='hand-paper')
-            dd(:class='{"has-text-primary": playerChoice === "p"}') {{(botProbs.p * 100).toFixed(0)}}%
+            .column(:class='{"has-text-primary": playerChoice === "p"}')
+              font-awesome-icon(icon='hand-paper')
+              div {{(botProbs.p * 100).toFixed(0)}}%
 
-            dt(:class='{"has-text-primary": playerChoice === "s"}'): font-awesome-icon(icon='hand-scissors')
-            dd(:class='{"has-text-primary": playerChoice === "s"}') {{(botProbs.s * 100).toFixed(0)}}%
+            .column(:class='{"has-text-primary": playerChoice === "s"}')
+              font-awesome-icon(icon='hand-scissors')
+              div {{(botProbs.s * 100).toFixed(0)}}%
 
-        .box
-          h4.is-size-4 Total wins
-          dl
-            dt: font-awesome-icon(icon='smile')
-            dd {{playerWins}}
+        .container.buttonbox
+          button.button.is-primary.is-medium(@click='onConfirmResult')
+            span.icon: font-awesome-icon(icon='sync')
+            span Next round
 
-            dt: font-awesome-icon(icon='desktop')
-            dd {{botWins}}
+      .stats.box
+        h4.is-size-4 Total wins
+        .columns.has-text-centered
+          .column
+            font-awesome-icon(icon='smile')
+            div {{playerWins}}
 
-            dt: font-awesome-icon(icon='balance-scale')
-            dd {{draws}}
+          .column
+            font-awesome-icon(icon='desktop')
+            div {{botWins}}
 
-        button.button.is-primary.is-medium(@click='onConfirmResult')
-          span.icon: font-awesome-icon(icon='sync')
-          span Next round
+          .column
+            font-awesome-icon(icon='balance-scale')
+            div {{draws}}
 
-    section.plot(ref='plot')
+
+        .plot(ref='plot')
 
     section.has-text-centered
       a(@click='onReset') Forget what you've learned
@@ -326,5 +334,9 @@ dd {
 
 .plot text.legend {
   text-anchor: middle;
+}
+
+.buttonbox, .stats {
+  margin: 20px 0;
 }
 </style>
