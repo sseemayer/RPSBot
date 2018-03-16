@@ -57,7 +57,6 @@
             font-awesome-icon(icon='balance-scale')
             div {{draws}}
 
-
         .plot(ref='plot')
 
     section.has-text-centered
